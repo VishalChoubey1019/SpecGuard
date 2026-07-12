@@ -20,6 +20,9 @@
     <properties>
         <java.version>21</java.version>
         <jjwt.version>0.12.6</jjwt.version>
+        <!-- Override the Spring Boot parent's managed Lombok version: JDK 25 needs Lombok
+             1.18.42+ (earlier versions throw "TypeTag :: UNKNOWN" on this JDK's javac). -->
+        <lombok.version>1.18.42</lombok.version>
     </properties>
 
     <dependencies>
@@ -86,6 +89,13 @@
             <groupId>me.paulschwarz</groupId>
             <artifactId>spring-dotenv</artifactId>
             <version>4.0.0</version>
+        </dependency>
+
+        <!-- GitHub API client: wrap instead of hand-rolling REST calls (repo module) -->
+        <dependency>
+            <groupId>org.kohsuke</groupId>
+            <artifactId>github-api</artifactId>
+            <version>1.326</version>
         </dependency>
 
         <!-- Actuator: gives us /actuator/health for free (Phase 7 health endpoint) -->

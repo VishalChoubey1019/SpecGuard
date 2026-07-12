@@ -51,5 +51,10 @@ specguard:
   slack:
     webhook-url: ${SLACK_WEBHOOK_URL:}
 
+  governance:
+    # Path to the oasdiff binary; override if it's not on PATH (e.g. a fixed location in the
+    # Phase 7 container image). Squawk/Hadolint paths join here in Phase 3.
+    oasdiff-path: ${OASDIFF_PATH:oasdiff}
+
   llm:
     anthropic-api-key: ${ANTHROPIC_API_KEY:}
