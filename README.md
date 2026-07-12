@@ -31,7 +31,7 @@ copilot, containerized app image. Those are Phases 2–7.
 
 3. **Run the app** (Flyway migrates the schema automatically on boot):
    ```bash
-   ./mvnw spring-boot:run
+   ./mvn spring-boot:run
    ```
    (No `mvnw` wrapper committed yet — use your local `mvn` for now, or ask me to add
    the wrapper jar in a follow-up.)
