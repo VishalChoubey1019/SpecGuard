@@ -1,0 +1,16 @@
+# Dev-only: brings up Postgres so you can run the app locally with `mvn spring-boot:run`.
+# The full containerized app + compose setup is a Phase 7 deliverable, not built yet.
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: specguard
+      POSTGRES_USER: specguard
+      POSTGRES_PASSWORD: specguard
+    ports:
+      - "5432:5432"
+    volumes:
+      - specguard_db_data:/var/lib/postgresql/data
+
+volumes:
+  specguard_db_data:

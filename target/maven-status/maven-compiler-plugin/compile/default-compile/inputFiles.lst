@@ -1,0 +1,17 @@
+/Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/SpecGuardApplication.java
+/Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/auth/AuthController.java
+/Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/auth/AuthService.java
+/Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/auth/JwtAuthFilter.java
+/Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/auth/JwtService.java
+/Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/auth/User.java
+/Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/auth/UserRepository.java
+/Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/auth/dto/AuthResponse.java
+/Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/auth/dto/LoginRequest.java
+/Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/auth/dto/RegisterRequest.java
+/Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/config/SecurityConfig.java
+/Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/config/SpecGuardProperties.java
+/Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/copilot/package-info.java
+/Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/dashboard/package-info.java
+/Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/governance/package-info.java
+/Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/repo/package-info.java
+/Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/workflow/package-info.java
