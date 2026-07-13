@@ -56,7 +56,6 @@ public class GithubClient {
             GHRepository repo = github.getRepository(repoFullName);
             GHPullRequest pr = repo.getPullRequest(prNumber);
             
-            // Todo: right now the files will be empty because of no fields in ChangedFile
             List<ChangedFile> files = pr.listFiles().toList().stream()
                     .map(this::toChangedFile)
                     .toList();
@@ -96,8 +95,12 @@ public class GithubClient {
         }
     }
 
-    // Todo: Update this once we finalise the fields needed
     private ChangedFile toChangedFile(GHPullRequestFileDetail file) {
-        return new ChangedFile();
+        return new ChangedFile(
+                file.getFilename(),
+                file.getStatus(),
+                file.getAdditions(),
+                file.getDeletions(),
+                file.getPatch());
     }
 }

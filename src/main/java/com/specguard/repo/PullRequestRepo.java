@@ -13,5 +13,5 @@ public interface PullRequestRepo extends JpaRepository<PullRequest, UUID> {
      * @param prNumber     per-repo PR number
      * @return the existing tracked PR row, if the webhook has seen this PR before
      */
-    Optional<PullRequestRepo> findByRepoFullNameAndPrNumber(String repoFullName, int prNumber);
+    Optional<PullRequest> findByRepoFullNameAndPrNumber(String repoFullName, int prNumber);
 }
