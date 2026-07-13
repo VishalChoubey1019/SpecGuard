@@ -1,5 +1,4 @@
 /**
- * repo — GitHub webhook receipt, PR diff/changed-file fetching.
- * Phase 2. Empty for now (Phase 1 scaffold only).
+ * repo — GitHub webhook receipt and PR changed-file fetching.
  */
 package com.specguard.repo;
