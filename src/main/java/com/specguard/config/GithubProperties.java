@@ -14,7 +14,6 @@ public class GithubProperties {
     /*
      * Shared secret configured on the GitHub webhook, used to verify {@code X-Hub-Signature-256}. 
      * Used in GitHubWebhookController.receive()
-     * 
     */
     private String webhookSecret;
     /** Token used to authenticate outbound calls to the GitHub REST API (fetching PR files, posting comments). */
