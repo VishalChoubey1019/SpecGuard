@@ -2,6 +2,7 @@ package com.specguard.dashboard;
 
 import com.specguard.dashboard.dto.PullRequestDto;
 import com.specguard.dashboard.dto.ViolationDto;
+import com.specguard.governance.Severity;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,6 @@ public class DashboardController {
         return ResponseEntity.ok(dashboardService.getPullRequests());
     }
 
-    // TODO: add an endpoint to also fetch violation severity in future PRs
     /** @return every recorded violation, across all pull requests. */
     @GetMapping("/violations")
     public ResponseEntity<List<ViolationDto>> getViolations() {
@@ -37,6 +37,13 @@ public class DashboardController {
     @GetMapping("/pull-requests/{pullRequestId}/violations")
     public ResponseEntity<List<ViolationDto>> getViolationsForPullRequest(@PathVariable UUID pullRequestId) {
         return ResponseEntity.ok(dashboardService.getViolationsForPullRequest(pullRequestId));
+    }
+
+    // TODO: add an endpoint to filter violations by category too, mirroring this severity filter
+    /** @return every recorded violation at the given severity, across all pull requests. */
+    @GetMapping("/violations/severity/{severity}")
+    public ResponseEntity<List<ViolationDto>> getViolationsBySeverity(@PathVariable Severity severity) {
+        return ResponseEntity.ok(dashboardService.getViolationsBySeverity(severity));
     }
 
     @ExceptionHandler(NoSuchElementException.class)
