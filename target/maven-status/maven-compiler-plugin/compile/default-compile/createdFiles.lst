@@ -1,3 +1,4 @@
+com/specguard/governance/Violation.class
 com/specguard/copilot/package-info.class
 com/specguard/auth/JwtAuthFilter.class
 com/specguard/auth/UserRepository.class
@@ -5,15 +6,20 @@ com/specguard/auth/User.class
 com/specguard/repo/GithubApiException.class
 com/specguard/config/GithubProperties.class
 com/specguard/governance/package-info.class
+com/specguard/repo/PullRequestRepo.class
 com/specguard/repo/ChangedFile.class
+com/specguard/repo/PullRequest.class
 com/specguard/auth/AuthService.class
 com/specguard/auth/JwtService.class
+com/specguard/governance/ViolationRepo.class
 com/specguard/SpecGuardApplication.class
 com/specguard/auth/dto/LoginRequest.class
 com/specguard/config/GovernanceProperties.class
 com/specguard/workflow/package-info.class
+com/specguard/repo/PrStatus.class
 com/specguard/auth/AuthController.class
 com/specguard/auth/AuthController$ErrorBody.class
+com/specguard/governance/ViolationCategory.class
 com/specguard/repo/package-info.class
 com/specguard/config/SecurityConfig.class
 com/specguard/auth/dto/RegisterRequest.class

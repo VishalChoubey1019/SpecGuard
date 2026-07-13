@@ -14,9 +14,15 @@
 /Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/config/SpecGuardProperties.java
 /Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/copilot/package-info.java
 /Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/dashboard/package-info.java
+/Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/governance/Violation.java
+/Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/governance/ViolationCategory.java
+/Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/governance/ViolationRepo.java
 /Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/governance/package-info.java
 /Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/repo/ChangedFile.java
 /Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/repo/GithubApiException.java
 /Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/repo/GithubClient.java
+/Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/repo/PrStatus.java
+/Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/repo/PullRequest.java
+/Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/repo/PullRequestRepo.java
 /Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/repo/package-info.java
 /Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/workflow/package-info.java
