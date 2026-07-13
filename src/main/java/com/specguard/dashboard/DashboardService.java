@@ -2,6 +2,7 @@ package com.specguard.dashboard;
 
 import com.specguard.dashboard.dto.PullRequestDto;
 import com.specguard.dashboard.dto.ViolationDto;
+import com.specguard.governance.Severity;
 import com.specguard.governance.Violation;
 import com.specguard.governance.ViolationRepo;
 import com.specguard.repo.PullRequest;
@@ -44,11 +45,17 @@ public class DashboardService {
         return violationRepo.findByPullRequest(pullRequest).stream().map(DashboardService::toDto).toList();
     }
 
+    /** @return every recorded violation at the given severity, across all pull requests. */
+    public List<ViolationDto> getViolationsBySeverity(Severity severity) {
+        return violationRepo.findBySeverity(severity).stream().map(DashboardService::toDto).toList();
+    }
+
     private static PullRequestDto toDto(@NonNull PullRequest pr) {
         return new PullRequestDto(pr.getId(), pr.getRepoFullName(), pr.getPrNumber());
     }
 
     private static ViolationDto toDto(@NonNull Violation violation) {
-        return new ViolationDto(violation.getId(), violation.getPullRequest().getId(), violation.getCategory());
+        return new ViolationDto(violation.getId(), violation.getPullRequest().getId(), violation.getCategory(),
+                violation.getSeverity());
     }
 }
