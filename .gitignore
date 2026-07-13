@@ -1,0 +1,18 @@
+# Environment
+.env
+
+# Local dev overrides
+docker-compose.dev.yml
+
+# Build output
+target/
+*.class
+*.lst
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
