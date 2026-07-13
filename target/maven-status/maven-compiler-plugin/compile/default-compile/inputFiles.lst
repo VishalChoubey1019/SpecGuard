@@ -8,6 +8,8 @@
 /Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/auth/dto/AuthResponse.java
 /Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/auth/dto/LoginRequest.java
 /Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/auth/dto/RegisterRequest.java
+/Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/config/GithubProperties.java
+/Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/config/GovernanceProperties.java
 /Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/config/SecurityConfig.java
 /Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/config/SpecGuardProperties.java
 /Users/vishal/Desktop/projects/SpecGuard/src/main/java/com/specguard/copilot/package-info.java
