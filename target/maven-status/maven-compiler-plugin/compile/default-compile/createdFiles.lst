@@ -5,6 +5,7 @@ com/specguard/copilot/package-info.class
 com/specguard/auth/JwtAuthFilter.class
 com/specguard/auth/UserRepository.class
 com/specguard/auth/User.class
+com/specguard/config/GithubProperties.class
 com/specguard/governance/package-info.class
 com/specguard/auth/AuthService.class
 com/specguard/config/SecurityConfig.class
@@ -13,6 +14,7 @@ com/specguard/auth/JwtService.class
 com/specguard/config/SpecGuardProperties.class
 com/specguard/SpecGuardApplication.class
 com/specguard/auth/dto/LoginRequest.class
+com/specguard/config/GovernanceProperties.class
 com/specguard/workflow/package-info.class
 com/specguard/auth/dto/AuthResponse.class
 com/specguard/dashboard/package-info.class
