@@ -26,6 +26,7 @@ public class DashboardController {
         return ResponseEntity.ok(dashboardService.getPullRequests());
     }
 
+    // TODO: add an endpoint to also fetch violation severity in future PRs
     /** @return every recorded violation, across all pull requests. */
     @GetMapping("/violations")
     public ResponseEntity<List<ViolationDto>> getViolations() {

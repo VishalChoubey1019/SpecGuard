@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
+import lombok.NonNull;
 
 /** Read-only aggregation of tracked pull requests and their violations for the dashboard. */
 @Service
@@ -43,11 +44,11 @@ public class DashboardService {
         return violationRepo.findByPullRequest(pullRequest).stream().map(DashboardService::toDto).toList();
     }
 
-    private static PullRequestDto toDto(PullRequest pr) {
+    private static PullRequestDto toDto(@NonNull PullRequest pr) {
         return new PullRequestDto(pr.getId(), pr.getRepoFullName(), pr.getPrNumber());
     }
 
-    private static ViolationDto toDto(Violation violation) {
+    private static ViolationDto toDto(@NonNull Violation violation) {
         return new ViolationDto(violation.getId(), violation.getPullRequest().getId(), violation.getCategory());
     }
 }
