@@ -97,4 +97,17 @@ public class PullRequest {
     void onUpdate() {
         this.updatedAt = Instant.now();
     }
+
+    /**
+     * Updates this row on a re-delivered webhook (e.g. a "synchronize" push adding new
+     * commits to an already-tracked PR) rather than inserting a duplicate. Only fields that
+     * can actually change after a PR is opened are mutable here — repoFullName, prNumber,
+     * and githubPrId are permanent identity, set once at construction.
+     */
+    public void applyUpdate(String title, String baseSha, String headSha, PrStatus status) {
+        this.title = title;
+        this.baseSha = baseSha;
+        this.headSha = headSha;
+        this.status = status;
+    }
 }
