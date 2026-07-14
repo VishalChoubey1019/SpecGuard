@@ -63,6 +63,91 @@ protected endpoint:
 curl http://localhost:8080/api/whatever -H "Authorization: Bearer <token>"
 ```
 
+## Test the violation pipeline end-to-end
+
+<!-- TODO: once PullRequestService dedups violations per PR, update step 3 — re-sending
+     the same webhook currently inserts duplicate violation rows. -->
+
+When a pull request is opened on GitHub, GitHub delivers a `pull_request` event to
+`POST /api/webhooks/github`. SpecGuard verifies the delivery's HMAC signature, saves the
+pull request, fetches the PR's changed files from GitHub, runs `oasdiff` on any modified
+OpenAPI spec files, and stores each breaking change it finds as a violation. Testing
+locally means playing GitHub's role: sending that same signed event by hand, then
+reading the result back through the dashboard API.
+
+To follow along, there needs to be a real PR (in a repo the configured `GITHUB_APP_TOKEN`
+can read) that modifies a file matching `*openapi*`/`*swagger*.{yml,yaml,json}` with a
+breaking change in it — for example changing a response property's type. `oasdiff` must
+be installed and on `PATH`.
+
+### 1. Send the webhook (`POST /api/webhooks/github`)
+
+This endpoint is authenticated by an HMAC-SHA256 signature in the `X-Hub-Signature-256`
+header, not by a JWT. GitHub computes that signature over the exact payload bytes using
+the shared webhook secret, so the local test does the same with `openssl`:
+
+```bash
+SECRET=local-test-secret-123   # must match GITHUB_WEBHOOK_SECRET in .env
+PAYLOAD='{"action":"opened","pull_request":{"id":1,"number":1,"title":"test breaking change","user":{"login":"your-username"},"base":{"sha":"BASE_SHA"},"head":{"sha":"HEAD_SHA"},"merged":false},"repository":{"full_name":"your-org/your-repo"}}'
+SIG="sha256=$(echo -n "$PAYLOAD" | openssl dgst -sha256 -hmac "$SECRET" | sed 's/^.* //')"
+
+curl -s -w "\nHTTP %{http_code}\n" -X POST http://localhost:8080/api/webhooks/github \
+  -H "X-GitHub-Event: pull_request" \
+  -H "X-Hub-Signature-256: $SIG" \
+  -H "Content-Type: application/json" \
+  -d "$PAYLOAD"
+```
+
+`full_name`, the PR `number`, and the `base`/`head` commit SHAs come from the real PR
+(`gh pr view --json number,baseRefOid,headRefOid`).
+
+The response is `HTTP 200` with an empty body. A `200` only means the event was received
+and the signature matched — analysis failures are logged and swallowed on purpose so
+GitHub doesn't endlessly retry a payload that can't be fixed. The app log confirms the
+analysis actually ran with a `Recorded N violation(s)` line. A `401` means the signature
+didn't match the secret.
+
+### 2. Get a token (`POST /api/auth/login`)
+
+The dashboard endpoints require a JWT, so the next step is logging in (register first if
+needed) and grabbing the `token` from the response:
+
+```bash
+curl -s -X POST http://localhost:8080/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"you@example.com","password":"a-real-password"}'
+```
+
+### 3. Read the violations (`GET /api/dashboard/violations`)
+
+```bash
+curl -s http://localhost:8080/api/dashboard/violations \
+  -H "Authorization: Bearer <token>"
+```
+
+Each breaking change oasdiff found comes back as one entry:
+
+```json
+[
+  {
+    "id": "f8e477ad-d7f2-41e9-956a-f266f72eef95",
+    "pullRequestId": "c55b8cd1-bed5-429d-a869-7114b668779a",
+    "category": "API_CONTRACT",
+    "severity": "CRITICAL"
+  }
+]
+```
+
+An empty list `[]` means no violation was recorded — usually oasdiff isn't on `PATH`,
+the changed file didn't match the OpenAPI filename pattern, or the file was `added`
+rather than `modified` (a new spec has no prior version to break). The app log tells
+which. Re-sending the same webhook re-runs the analysis and inserts new rows rather
+than replacing the old ones, so firing it twice shows duplicates.
+
+Violations can also be scoped to a single PR
+(`GET /api/dashboard/pull-requests/{pullRequestId}/violations`) or filtered by severity
+(`GET /api/dashboard/violations/severity/CRITICAL`).
+
 ## Notes / decisions made in this phase
 
 - **`tenant_id`** exists on `users` from day one (defaulted, indexed, never enforced).
@@ -76,8 +161,3 @@ curl http://localhost:8080/api/whatever -H "Authorization: Bearer <token>"
 - Webhook and other unauthenticated integration endpoints are pre-permitted in
   `SecurityConfig` (`/api/webhooks/**`) since those will use HMAC signature
   verification instead of JWT, not because they're unauthenticated.
-
-## Next: Phase 2 — Core Pipeline
-
-GitHub webhook receiver + changed-file fetch + OpenAPI diff (wrap oasdiff) +
-policy engine + violation storage + risk scoring.
