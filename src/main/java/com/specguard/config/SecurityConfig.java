@@ -33,6 +33,13 @@ public class SecurityConfig {
                 .requestMatchers("/actuator/health").permitAll()
                 // GitHub webhooks are authenticated via HMAC signature, not JWT (see repo module)
                 .requestMatchers("/api/webhooks/**").permitAll()
+                // these are for generation of openapi.yaml file
+                .requestMatchers(
+                    "/v3/api-docs/**",
+                    "/v3/api-docs.yaml",
+                    "/swagger-ui/**",
+                    "/swagger-ui.html"
+                ).permitAll()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
