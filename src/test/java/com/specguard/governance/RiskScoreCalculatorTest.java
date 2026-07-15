@@ -13,15 +13,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-/**
- * Unit tests for {@link RiskScoreCalculator}'s weighted-sum formula (LOW=1, MEDIUM=3,
- * HIGH=7, CRITICAL=15) and its total-vs-open-only distinction. Pure Mockito mocks of
- * {@link ViolationRepo} — no Spring context or database needed, same pattern as the
- * OpenApiDiffAnalyzer tests. Does NOT verify that {@link ViolationRepo}'s derived query
- * method names actually resolve against the entity graph; that only happens at
- * application-context startup (see {@link ViolationRepo}'s class javadoc) and needs a
- * real boot or a {@code @DataJpaTest} slice, neither of which this test performs.
- */
+
 @ExtendWith(MockitoExtension.class)
 class RiskScoreCalculatorTest {
 
