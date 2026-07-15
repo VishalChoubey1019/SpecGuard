@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.UUID;
 import lombok.NonNull;
 
@@ -40,7 +41,7 @@ public class DashboardService {
      * @throws NoSuchElementException if no pull request with that id is tracked
      */
     public List<ViolationDto> getViolationsForPullRequest(UUID pullRequestId) {
-        PullRequest pullRequest = pullRequestRepo.findById(pullRequestId)
+        PullRequest pullRequest = pullRequestRepo.findById(Objects.requireNonNull(pullRequestId))
                 .orElseThrow(() -> new NoSuchElementException("no pull request with id " + pullRequestId));
         return violationRepo.findByPullRequest(pullRequest).stream().map(DashboardService::toDto).toList();
     }
