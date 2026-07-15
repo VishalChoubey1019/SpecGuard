@@ -33,8 +33,7 @@ copilot, containerized app image. Those are Phases 2–7.
    ```bash
    mvn spring-boot:run
    ```
-   (No `mvnw` wrapper committed yet — use your local `mvn` for now, or ask me to add
-   the wrapper jar in a follow-up.)
+   (No `mvnw` wrapper committed yet — use your local `mvn` for now.)
 
 4. **Check health**:
    ```bash
