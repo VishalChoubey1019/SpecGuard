@@ -6,4 +6,5 @@ import com.specguard.governance.ViolationCategory;
 import java.util.UUID;
 
 /** Dashboard-facing view of a {@link com.specguard.governance.Violation}. */
-public record ViolationDto(UUID id, UUID pullRequestId, ViolationCategory category, Severity severity) {}
+public record ViolationDto(UUID id, UUID pullRequestId, ViolationCategory category, Severity severity,
+                            String ruleId, String message, String filePath) {}

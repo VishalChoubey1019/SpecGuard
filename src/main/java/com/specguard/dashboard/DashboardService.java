@@ -51,11 +51,11 @@ public class DashboardService {
     }
 
     private static PullRequestDto toDto(@NonNull PullRequest pr) {
-        return new PullRequestDto(pr.getId(), pr.getRepoFullName(), pr.getPrNumber());
+        return new PullRequestDto(pr.getId(), pr.getRepoFullName(), pr.getPrNumber(), pr.getTitle(), pr.getStatus());
     }
 
     private static ViolationDto toDto(@NonNull Violation violation) {
         return new ViolationDto(violation.getId(), violation.getPullRequest().getId(), violation.getCategory(),
-                violation.getSeverity());
+                violation.getSeverity(), violation.getRuleId(), violation.getMessage(), violation.getFilePath());
     }
 }
