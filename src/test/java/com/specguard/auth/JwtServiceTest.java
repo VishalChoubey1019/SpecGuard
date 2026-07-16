@@ -12,12 +12,6 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-/**
- * Unit tests for {@link JwtService}: real HS256 sign/verify round-trips against an
- * in-memory {@link SpecGuardProperties}, no mocks or Spring context needed — this class
- * has no external collaborators, only key material and the jjwt library, so testing it
- * with real tokens is more meaningful than mocking anything here would be.
- */
 class JwtServiceTest {
 
     // >= 256 bits, required for HS256 (see JwtService's constructor comment).
@@ -97,7 +91,6 @@ class JwtServiceTest {
         return new JwtService(props);
     }
 
-    /** {@link User#id} has no public setter (JPA-assigned) — set via reflection for test setup only. */
     private static void setId(User user, UUID id) {
         try {
             var field = User.class.getDeclaredField("id");

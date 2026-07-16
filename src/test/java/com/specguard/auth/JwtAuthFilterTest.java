@@ -24,16 +24,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
-/**
- * Unit tests for {@link JwtAuthFilter}. {@link HttpServletRequest}, {@link HttpServletResponse},
- * and {@link FilterChain} are all interfaces, so plain Mockito mocks exercise the real
- * {@code OncePerRequestFilter.doFilter()} dispatch machinery (which calls into
- * {@code doFilterInternal}) without needing a real servlet container or MockMvc.
- *
- * <p>{@link SecurityContextHolder} is a static, thread-local store shared across the whole
- * JVM/thread — cleared before and after every test so no state leaks between tests here or
- * into unrelated test classes running on the same thread.
- */
+
 @ExtendWith(MockitoExtension.class)
 class JwtAuthFilterTest {
 
@@ -105,23 +96,21 @@ class JwtAuthFilterTest {
         verify(filterChain).doFilter(request, response);
     }
 
-    // @Test
-    // void validTokenForUnknownUser_leavesAuthenticationNull_andStillContinuesChain() throws Exception {
-    //     UUID userId = UUID.randomUUID();
-    //     when(request.getHeader("Authorization")).thenReturn("Bearer " + TOKEN);
-    //     when(jwtService.extractUserId(TOKEN)).thenReturn(userId);
-    //     when(userRepository.findById(userId)).thenReturn(Optional.empty());
+    @Test
+    void validTokenForUnknownUser_leavesAuthenticationNull_andStillContinuesChain() throws Exception {
+        UUID userId = UUID.randomUUID();
+        when(request.getHeader("Authorization")).thenReturn("Bearer " + TOKEN);
+        when(jwtService.extractUserId(TOKEN)).thenReturn(userId);
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
-    //     filter.doFilter(request, response, filterChain);
+        filter.doFilter(request, response, filterChain);
 
-    //     assertThat(SecurityContextHolder.getContext().getAuthentication()).isNull();
-    //     verify(filterChain).doFilter(request, response);
-    // }
+        assertThat(SecurityContextHolder.getContext().getAuthentication()).isNull();
+        verify(filterChain).doFilter(request, response);
+    }
 
     @Test
     void invalidToken_clearsContextAndContinuesChain_withoutThrowing() throws Exception {
-        // Pre-populate the context to prove the catch block actually clears it, not just
-        // "happens to already be empty".
         SecurityContextHolder.getContext().setAuthentication(
                 new UsernamePasswordAuthenticationToken("someone", null));
         when(request.getHeader("Authorization")).thenReturn("Bearer " + TOKEN);

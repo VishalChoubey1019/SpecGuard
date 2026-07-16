@@ -21,14 +21,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
-/**
- * Unit tests for {@link AuthService}'s register/login logic. Mocks {@link UserRepository}
- * and {@link JwtService} (external collaborators), but uses a real {@link BCryptPasswordEncoder}
- * rather than mocking it — it's a thin, already-correct wrapper, and mocking password
- * matching would mean the test no longer exercises the actual hash/compare behavior it's
- * meant to protect. No Spring context or database needed, same pattern as
- * {@code RiskScoreCalculatorTest}.
- */
+
 @ExtendWith(MockitoExtension.class)
 class AuthServiceTest {
 
