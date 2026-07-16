@@ -100,8 +100,11 @@ public class OpenApiDiffAnalyzer {
             baseContent.isPresent(),
             headContent.isPresent()
         );
-        log.info("===== BASE SPEC =====\n{}", baseContent.get());
-        log.info("===== HEAD SPEC =====\n{}", headContent.get());
+        /**
+         * For debugging you can use
+         *    log.info("===== BASE SPEC =====\n{}", baseContent.get());
+         *    log.info("===== HEAD SPEC =====\n{}", headContent.get());
+         */
         if (baseContent.isEmpty() || headContent.isEmpty()) {
             log.debug("Skipping {}: missing base or head content (unexpected for a 'modified' file)", filePath);
             return List.of();
