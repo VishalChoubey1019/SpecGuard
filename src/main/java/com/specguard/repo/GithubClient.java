@@ -85,6 +85,7 @@ public class GithubClient {
             GHContent content = github.getRepository(repoFullName).getFileContent(path, ref);
             InputStream inputStream = content.read();
             String fileContent = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+            log.info("[GithubClient] File Content is present: {}", !fileContent.isBlank());
             return Optional.of(fileContent);
         } catch (GHFileNotFoundException e) {
             log.warn("[GHFileNotFoundException] File not found");

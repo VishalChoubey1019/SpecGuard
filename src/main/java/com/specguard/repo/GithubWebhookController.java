@@ -52,8 +52,16 @@ public class GithubWebhookController {
         }
 
         try {
-            GithubPullRequestEvent event = objectMapper.readValue(rawPayload, GithubPullRequestEvent.class);
+            log.info("Received GitHub pull_request webhook");
+
+            GithubPullRequestEvent event =
+            objectMapper.readValue(rawPayload, GithubPullRequestEvent.class);
+
+            log.info("PR received for repository");
+
             pullRequestService.handleEvent(event);
+
+            log.info("Finished processing PR");
         } catch (Exception e) {
             // Deliberately swallow and 200: GitHub retries on non-2xx, and a malformed/unexpected
             // payload won't fix itself on retry. Logging is the recovery path for now.
