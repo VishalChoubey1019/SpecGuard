@@ -40,7 +40,7 @@ specguard:
     expiration-minutes: ${JWT_EXPIRATION_MINUTES:1440}
 
   frontend:
-    origins: ${FRONTEND_ORIGINS:http://localhost:3000}
+    origins: ${FRONTEND_ORIGINS}
 
   github:
     webhook-secret: ${GITHUB_WEBHOOK_SECRET:}

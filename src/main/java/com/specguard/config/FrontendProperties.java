@@ -13,5 +13,5 @@ import java.util.List;
 public class FrontendProperties {
 
     /** Origins allowed to call this API from the browser (CORS). Comma-separated in .env. */
-    private List<String> origins = List.of("http://localhost:3000");
+    private List<String> origins;
 }
