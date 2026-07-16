@@ -2,6 +2,7 @@ package com.specguard.dashboard;
 
 import com.specguard.dashboard.dto.PullRequestDto;
 import com.specguard.dashboard.dto.ViolationDto;
+import com.specguard.governance.RiskScoreCalculator;
 import com.specguard.governance.Severity;
 import com.specguard.governance.Violation;
 import com.specguard.governance.ViolationRepo;
@@ -24,10 +25,11 @@ public class DashboardService {
 
     private final PullRequestRepo pullRequestRepo;
     private final ViolationRepo violationRepo;
+    private final RiskScoreCalculator riskScoreCalculator;
 
-    /** @return every pull request SpecGuard is tracking. */
+    /** @return every pull request SpecGuard is tracking, each with its total risk score. */
     public List<PullRequestDto> getPullRequests() {
-        return pullRequestRepo.findAll().stream().map(DashboardService::toDto).toList();
+        return pullRequestRepo.findAll().stream().map(this::toDto).toList();
     }
 
     /** @return every recorded violation, across all pull requests. */
@@ -51,12 +53,14 @@ public class DashboardService {
         return violationRepo.findBySeverity(severity).stream().map(DashboardService::toDto).toList();
     }
 
-    private static PullRequestDto toDto(@NonNull PullRequest pr) {
-        return new PullRequestDto(pr.getId(), pr.getRepoFullName(), pr.getPrNumber(), pr.getTitle(), pr.getStatus());
+    private PullRequestDto toDto(@NonNull PullRequest pr) {
+        return new PullRequestDto(pr.getId(), pr.getRepoFullName(), pr.getPrNumber(), pr.getTitle(), pr.getStatus(),
+                riskScoreCalculator.scoreForPullRequest(pr));
     }
 
     private static ViolationDto toDto(@NonNull Violation violation) {
         return new ViolationDto(violation.getId(), violation.getPullRequest().getId(), violation.getCategory(),
-                violation.getSeverity(), violation.getRuleId(), violation.getMessage(), violation.getFilePath());
+                violation.getSeverity(), violation.getRuleId(), violation.getMessage(), violation.getFilePath(),
+                RiskScoreCalculator.weightFor(violation.getSeverity()));
     }
 }
