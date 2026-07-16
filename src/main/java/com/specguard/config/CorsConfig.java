@@ -1,5 +1,6 @@
 package com.specguard.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
@@ -18,13 +19,10 @@ import java.util.List;
  * can differ between local dev and a real deployed frontend without a code change.
  */
 @Configuration
+@RequiredArgsConstructor
 public class CorsConfig {
 
     private final FrontendProperties properties;
-
-    public CorsConfig(FrontendProperties properties) {
-        this.properties = properties;
-    }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
