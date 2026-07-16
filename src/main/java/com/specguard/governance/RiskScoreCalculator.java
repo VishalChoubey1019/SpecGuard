@@ -30,6 +30,15 @@ public class RiskScoreCalculator {
     private final ViolationRepo violationRepo;
 
     /**
+     * @param severity a violation's severity
+     * @return the point weight for that severity, per {@link #SEVERITY_WEIGHTS} — used by
+     *         the dashboard to show a per-violation score without duplicating the table
+     */
+    public static int weightFor(Severity severity) {
+        return SEVERITY_WEIGHTS.get(severity);
+    }
+
+    /**
      * @param pullRequest a tracked pull request
      * @return sum of severity weights across every violation recorded for that PR
      */

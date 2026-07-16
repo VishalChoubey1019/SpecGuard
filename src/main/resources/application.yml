@@ -3,7 +3,7 @@ spring:
     name: specguard
 
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/specguard}
+    url: ${DB_URL:jdbc:postgresql://localhost:5433/specguard}
     username: ${DB_USER:specguard}
     password: ${DB_PASSWORD:specguard}
     driver-class-name: org.postgresql.Driver
@@ -38,6 +38,9 @@ specguard:
   jwt:
     secret: ${JWT_SECRET:change-me-in-.env-this-default-is-not-safe-for-anything-real}
     expiration-minutes: ${JWT_EXPIRATION_MINUTES:1440}
+
+  frontend:
+    origins: ${FRONTEND_ORIGINS:http://localhost:3000}
 
   github:
     webhook-secret: ${GITHUB_WEBHOOK_SECRET:}
