@@ -3,7 +3,7 @@ spring:
     name: specguard
 
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5433/specguard}
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/specguard}
     username: ${DB_USER:specguard}
     password: ${DB_PASSWORD:specguard}
     driver-class-name: org.postgresql.Driver
