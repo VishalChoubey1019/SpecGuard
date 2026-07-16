@@ -15,44 +15,70 @@ import java.util.concurrent.TimeUnit;
 @Component
 @Slf4j
 public class ExternalProcessRunner {
-
     private static final long TIMEOUT_SECONDS = 30;
 
     /**
-     * @param command the command and its arguments, e.g. {@code ["oasdiff", "breaking", ...]}
-     * @return everything the process wrote to stdout
-     * @throws RuntimeException if the process can't be started, times out, or the underlying
-     *                          thread is interrupted while waiting on it. Not a custom type:
-     *                          nothing in this codebase catches process failures differently
-     *                          from any other analyzer failure — see safeAnalyzeFile in
-     *                          OpenApiDiffAnalyzer, which catches RuntimeException generically.
+     * Executes an external command (e.g. oasdiff) and returns its stdout.
+     *
+     * @param command command and arguments
+     * @return stdout produced by the process
+     * @throws RuntimeException if the command fails to start, times out, exits
+     *         non-zero, or the waiting thread is interrupted.
      */
     public String run(List<String> command) {
         log.debug("Running external command: {}", String.join(" ", command));
+
         try {
             Process process = new ProcessBuilder(command)
                     .redirectErrorStream(false)
                     .start();
 
-            String stdout = new String(process.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
-            String stderr = new String(process.getErrorStream().readAllBytes(), StandardCharsets.UTF_8);
-
             boolean finished = process.waitFor(TIMEOUT_SECONDS, TimeUnit.SECONDS);
+
             if (!finished) {
                 process.destroyForcibly();
-                throw new RuntimeException("Command timed out after " + TIMEOUT_SECONDS + "s: " + command);
+                throw new RuntimeException(
+                        "Command timed out after " + TIMEOUT_SECONDS + "s: " + command);
+            }
+
+            String stdout = new String(
+                    process.getInputStream().readAllBytes(),
+                    StandardCharsets.UTF_8);
+
+            String stderr = new String(
+                    process.getErrorStream().readAllBytes(),
+                    StandardCharsets.UTF_8);
+
+            int exitCode = process.exitValue();
+
+            log.debug("Command exited with code {}", exitCode);
+
+            if (!stdout.isBlank()) {
+                log.debug("Command stdout:\n{}", stdout);
             }
 
             if (!stderr.isBlank()) {
-                log.debug("Command stderr: {}", stderr);
+                log.debug("Command stderr:\n{}", stderr);
+            }
+
+            if (exitCode != 0) {
+                throw new RuntimeException(
+                    "External command failed with exit code "
+                            + exitCode
+                            + "\nCommand: "
+                            + String.join(" ", command)
+                            + "\nStderr:\n"
+                            + stderr);
             }
 
             return stdout;
+
         } catch (IOException e) {
             throw new RuntimeException("Failed to start command: " + command, e);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw new RuntimeException("Interrupted while waiting on command: " + command, e);
+            throw new RuntimeException(
+                    "Interrupted while waiting on command: " + command, e);
         }
     }
 }

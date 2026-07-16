@@ -58,6 +58,18 @@ public class OpenApiDiffAnalyzer {
      * @return one {@link Violation} per breaking change oasdiff reports, across all matching files
      */
     public List<Violation> analyze(PullRequest pullRequest, List<ChangedFile> changedFiles) {
+        changedFiles.forEach(f ->
+        log.info("{} - {}", f.filename(), f.status()));
+        
+        List<ChangedFile> openApiFiles = changedFiles.stream()
+            .filter(f -> OPENAPI_FILENAME.matcher(f.filename()).matches())
+            .toList();
+
+        if (openApiFiles.isEmpty()) {
+            log.info("No OpenAPI files changed. Skipping OpenAPI analysis.");
+            return List.of();
+        }
+
         return changedFiles.stream()
                 .filter(f -> OPENAPI_FILENAME.matcher(f.filename()).matches())
                 .filter(f -> "modified".equals(f.status()))
@@ -78,11 +90,18 @@ public class OpenApiDiffAnalyzer {
     }
 
     private List<Violation> analyzeFile(PullRequest pullRequest, String filePath) {
+        log.info("Analyzing OpenAPI file {}", filePath);
         Optional<String> baseContent = gitHubClient.fetchFileContent(
                 pullRequest.getRepoFullName(), filePath, pullRequest.getBaseSha());
         Optional<String> headContent = gitHubClient.fetchFileContent(
                 pullRequest.getRepoFullName(), filePath, pullRequest.getHeadSha());
-
+        log.info(
+            "Base present={}, Head present={}",
+            baseContent.isPresent(),
+            headContent.isPresent()
+        );
+        log.info("===== BASE SPEC =====\n{}", baseContent.get());
+        log.info("===== HEAD SPEC =====\n{}", headContent.get());
         if (baseContent.isEmpty() || headContent.isEmpty()) {
             log.debug("Skipping {}: missing base or head content (unexpected for a 'modified' file)", filePath);
             return List.of();
@@ -93,13 +112,15 @@ public class OpenApiDiffAnalyzer {
         try {
             baseFile = writeTemp("oasdiff-base-", filePath, baseContent.get());
             headFile = writeTemp("oasdiff-head-", filePath, headContent.get());
-
+            log.info("Running oasdiff");
             String stdout = processRunner.run(List.of(
                     governanceProperties.getOasdiffPath(), "breaking",
                     baseFile.toString(), headFile.toString(),
                     "-f", "json"));
-
-            return parseBreakingChanges(stdout, pullRequest, filePath);
+            log.info("oasdiff output:\n{}", stdout);
+            List<Violation> violations = parseBreakingChanges(stdout, pullRequest, filePath);
+            log.info("Parsed {} violation(s)", violations.size());
+            return violations;
         } catch (IOException e) {
             log.error("Failed to write temp files for oasdiff on {}", filePath, e);
             return List.of();
