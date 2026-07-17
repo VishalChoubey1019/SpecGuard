@@ -1,19 +1,9 @@
-# SpecGuard MVP — Phase 1: Foundation
-
-Spring Boot monolith. Modules are packages, not services: `repo/`, `governance/`,
-`workflow/`, `dashboard/`, `copilot/`, plus `auth/` and `config/`. No event bus,
-no multi-tenant enforcement, no Kubernetes — see the LOE doc for what's deferred.
-
-## What's in this phase
-
-- [x] App skeleton with domain-module package structure
-- [x] Postgres schema + Flyway migration (`users` table, `tenant_id` stubbed/unused)
-- [x] Email/password auth issuing JWTs, stateless Spring Security filter chain
-- [x] Config/secrets loaded from env vars via `.env` (no vault)
-- [x] `/actuator/health` (wired now, doubles as the Phase 7 health endpoint)
-
-Not in this phase: webhook receiver, analyzers, workflow automation, dashboard,
-copilot, containerized app image. Those are Phases 2–7.
+# SpecGuard
+Organisation uses our product as a github app
+Using github webhooks, for each PR, a request to SpecGuard goes and it shoots relevant Github comments, and slack message, jira ticket flagging the issue.
+Org -> User Pushes a PR -> Webhook event -> SpecGuard -> adds a response if necessary and updates the dashboard with risk score, existing violations, etc.
+SpecGuard
+Once a webook event is registered -> Repo Service(verifies HMAC, artificats) -> Governance Service(evaluate risk score, violations) -> Workflow service -> Slack, Jira, Github -> Dashboard Service -> additionally we can have a copilot service which recommeneds the user for a better solution.
 
 ## Run it locally
 
