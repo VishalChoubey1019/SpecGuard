@@ -39,6 +39,9 @@ specguard:
     secret: ${JWT_SECRET:change-me-in-.env-this-default-is-not-safe-for-anything-real}
     expiration-minutes: ${JWT_EXPIRATION_MINUTES:1440}
 
+  frontend:
+    origins: ${FRONTEND_ORIGINS}
+
   github:
     webhook-secret: ${GITHUB_WEBHOOK_SECRET:}
     app-token: ${GITHUB_APP_TOKEN:}
