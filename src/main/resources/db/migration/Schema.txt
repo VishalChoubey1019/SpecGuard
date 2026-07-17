@@ -1,0 +1,72 @@
+Account                          (new — minimal, not "Organization")
+----------------------------------------------------------------
+id
+github_login          -- the GitHub org or user that owns the repos
+plan_tier              -- free | pro | enterprise
+stripe_customer_id
+created_at
+
+User
+--------
+id
+email
+password_hash
+name
+created_at
+
+Repository
+-----------
+id
+account_id             -- FK -> Account.id  (replaces plain "owner" string)
+github_repo_id
+owner
+name
+full_name
+default_branch
+private
+webhook_secret          -- new: HMAC verification for incoming events
+installed_at
+
+RepositoryAccess
+----------------
+id                      -- new: give it a real PK
+user_id
+repository_id
+role                    -- owner | admin | member | viewer
+UNIQUE(user_id, repository_id)   -- new: stop duplicate grants
+
+PullRequest
+-----------
+id
+repository_id
+number
+title
+author
+base_sha
+head_sha
+merge_base_sha          -- new: see note below
+state
+opened_at
+updated_at
+
+Policy
+-----------------
+id
+account_id              -- new: nullable = built-in/global, set = custom rule
+name
+enabled
+severity
+category                -- new: openapi | sql | dockerfile | terraform | pr_metadata
+configuration
+
+Violation
+----------
+id
+pull_request_id
+policy_id               -- new: FK -> Policy.id, replaces loose "rule" string
+category
+severity
+description
+file_path
+created_at
+resolved
