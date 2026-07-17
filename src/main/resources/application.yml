@@ -26,6 +26,9 @@ spring:
 
 server:
   port: ${PORT:8080}
+  # Cloud proxy/LB terminates HTTPS and forwards plain HTTP with X-Forwarded-* headers.
+  # Without this Spring sees http:// -> wrong redirect scheme + non-secure cookies.
+  forward-headers-strategy: framework
 
 management:
   endpoints:
